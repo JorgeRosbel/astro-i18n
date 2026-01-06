@@ -1,35 +1,43 @@
-import type { AstroGlobal } from 'astro';
-import { readFileSync } from 'fs';
-import { join } from 'path';
-import type { DotNotation } from '@/types';
+import type { AstroGlobal } from "astro";
+import { readFileSync } from "fs";
+import { join } from "path";
+import type { DotNotation } from "@/types";
 
+export function useI18n<T extends Record<string, any>>(astro: AstroGlobal) {
+  const lang = astro.currentLocale ?? astro.params?.lang ?? "en";
 
-export function useI18n<T extends Record<string, any>>(
-    astro: AstroGlobal,
-) {
-    const lang = astro.currentLocale ?? astro.params?.lang ?? 'en';
-    
-    const translations = JSON.parse(
-        readFileSync(join(process.cwd(), 'src', 'i18n', `${lang}.json`), 'utf-8')
-    ) as Record<string, any>;
+  const translations = JSON.parse(
+    readFileSync(join(process.cwd(), "src", "i18n", `${lang}.json`), "utf-8"),
+  ) as Record<string, any>;
 
+  if (!translations) {
+    throw new Error(`Translations for language '${lang}' not found. `);
+  }
 
-    if(!translations) {
-        throw new Error(`Translations for language '${lang}' not found.`);
-    }
+  function interpolate(text: string, params?: Record<string, any>): string {
+    if (!params) return text;
 
-    return {
-        t: (key: DotNotation<T>) => {
-            const keys = (key as string).split('.');
+    return text.replace(/\{\{(\w+)\}\}/g, (match, key) => {
+      return params[key] !== undefined ? String(params[key]) : match;
+    });
+  }
 
-            const result = keys.reduce((obj, k) => obj?.[k], translations);
-            return result ?? key;
-        },
-        lang,
-        changeLocale: (newLang: string) => {
-           const parts = astro.url.pathname.split("/").slice(2)
-           const route = [newLang, ...parts].join("/")
-           return route;
-        }
-    };
+  return {
+    t: (key: DotNotation<T>, params?: Record<string, any>): string => {
+      const keys = (key as string).split(".");
+      const result = keys.reduce((obj, k) => obj?.[k], translations);
+
+      if (typeof result !== "string") {
+        return key as string;
+      }
+
+      return interpolate(result, params);
+    },
+    lang,
+    changeLocale: (newLang: string) => {
+      const parts = astro.url.pathname.split("/").slice(2);
+      const route = [newLang, ...parts].join("/");
+      return route;
+    },
+  };
 }

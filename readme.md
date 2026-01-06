@@ -2,6 +2,8 @@
 
 Simple internationalization (i18n) library for Astro with TypeScript support.
 
+![@ariaskit/astro-i18n](image/@ariaskit_astro-i18n.png)
+
 ## Installation
 
 ```bash
@@ -86,6 +88,42 @@ const { t, lang } = useI18n(Astro);
 
 <h1>{t("title")}</h1>
 <p>{t("welcome_message")}</p>
+```
+
+## Variables/Interpolation
+
+You can use variables in your translations using the `{{variableName}}` syntax.
+
+**Example JSON:**
+```json
+{
+  "welcome": "Welcome, {{name}}!",
+  "greeting": "Hello {{name}}, you have {{count}} messages",
+  "data": {
+    "users": "Users {{name}}"
+  }
+}
+```
+
+**Usage:**
+```astro
+---
+import { useI18n } from "@ariaskit/astro-i18n";
+import en from "../i18n/en.json";
+
+const { t } = useI18n<typeof en>(Astro);
+---
+
+<h1>{t("welcome", { name: "Victor" })}</h1>
+<h2>{t("data.users", { name: "Victor" })}</h2>
+<p>{t("greeting", { name: "Victor", count: 5 })}</p>
+```
+
+**Output:**
+```html
+<h1>Welcome, Victor!</h1>
+<h2>Users Victor</h2>
+<p>Hello Victor, you have 5 messages</p>
 ```
 
 ## Routing Strategies
@@ -200,6 +238,7 @@ const { t, lang, changeLocale } = useI18n<typeof en>(Astro);
 
 - ✅ TypeScript autocomplete for translation keys
 - ✅ Nested translations with dot notation (`data.users`)
+- ✅ Variable interpolation with `{{variableName}}` syntax
 - ✅ Works with all Astro routing strategies
 - ✅ Language switcher with `changeLocale`
 - ✅ Zero configuration needed
