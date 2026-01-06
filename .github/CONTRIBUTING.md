@@ -7,7 +7,7 @@ Thank you for your interest in contributing to @ariaskit/astro-i18n! We welcome 
 1. Fork the repository
 2. Clone your fork:
    ```bash
-   git clone https://github.com/your-username/astro-i18n.git
+   git clone https://github.com/JorgeRosbel/astro-i18n.git
    cd astro-i18n
    ```
 3. Install dependencies:
