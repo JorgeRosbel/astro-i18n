@@ -1,6 +1,6 @@
 {
   "name": "@ariaskit/astro-i18n",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "An internationalization (i18n) library for Astro framework, providing easy localization and translation management for your Astro projects.",
   "exports": {
     ".": {
