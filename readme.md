@@ -2,7 +2,15 @@
 
 Simple internationalization (i18n) library for Astro with TypeScript support.
 
-![@ariaskit/astro-i18n](image/@ariaskit_astro-i18n.png)
+## Features
+
+- ✅ TypeScript autocomplete for translation keys using `DotNotation` type
+- ✅ Nested translations with dot notation (`data.users`)
+- ✅ Variable interpolation with `{{variableName}}` syntax
+- ✅ Works with all Astro routing strategies
+- ✅ Zero configuration needed
+- ✅ Lightweight and fast
+- ✅ Strong TypeScript support with path mapping
 
 ## Installation
 
@@ -16,13 +24,12 @@ yarn add @ariaskit/astro-i18n
 
 ## Setup
 
-1. Create your translation files in `src/i18n/`:
+1. Create your translation files in `i18n/`:
 
 ```
-src/
-  i18n/
-    en.json
-    es.json
+i18n/
+  en.json
+  es.json
 ```
 
 **Example `en.json`:**
@@ -49,14 +56,20 @@ src/
 }
 ```
 
-2. Enable JSON imports in `tsconfig.json`:
+2. Enable JSON imports and path mapping in `tsconfig.json`:
 ```json
 {
   "compilerOptions": {
-    "resolveJsonModule": true
+    "resolveJsonModule": true,
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["src/*"]
+    }
   }
 }
 ```
+
+3. Ensure your translation files are in the root `i18n/` directory (not `src/i18n/`):
 
 ## Usage
 
@@ -67,7 +80,7 @@ TypeScript support is **optional** but provides autocompletion for translation k
 ```astro
 ---
 import { useI18n } from "@ariaskit/astro-i18n";
-import en from "../i18n/en.json";
+import en from "i18n/en.json"; // Adjust path based on your structure
 
 const { t, lang } = useI18n<typeof en>(Astro);
 ---
@@ -109,7 +122,7 @@ You can use variables in your translations using the `{{variableName}}` syntax.
 ```astro
 ---
 import { useI18n } from "@ariaskit/astro-i18n";
-import en from "../i18n/en.json";
+import en from "i18n/en.json";
 
 const { t } = useI18n<typeof en>(Astro);
 ---
@@ -141,7 +154,7 @@ src/
 ```astro
 ---
 import { useI18n } from "@ariaskit/astro-i18n";
-import en from "../../i18n/en.json";
+import en from "i18n/en.json"; // Adjust path based on your structure
 import type { GetStaticPaths } from "astro";
 
 export const getStaticPaths = (() => {
@@ -198,51 +211,77 @@ const { t, lang } = useI18n<typeof en>(Astro);
 
 ## API
 
-### `useI18n<T>(astro: AstroGlobal)`
+### `useI18n<T>(astro: AstroGlobal, baseLang?: string)`
 
 Returns:
-- `t(key: string)`: Translation function with dot notation support
+- `t(key: DotNotation<T>, params?: Record<string, any>)`: Translation function with dot notation support and variable interpolation
 - `lang`: Current detected language
-- `changeLocale(newLang: string)`: Returns a new URL string with the updated locale
 
 **Language detection priority:**
-1. `Astro.currentLocale` (from Astro i18n config)
-2. `Astro.params.lang` (from dynamic routes)
-3. `'en'` (fallback)
+1. `baseLang` parameter (if provided)
+2. `Astro.currentLocale` (from Astro i18n config)
+3. `Astro.params.lang` (from dynamic routes)
+4. `'en'` (fallback)
 
-### Changing Language
+**File Structure:**
+The library looks for translation files in the root `i18n/` directory:
+```
+i18n/
+  en.json
+  es.json
+  // ... other language files
+```
 
-Use `changeLocale` to generate URLs for language switching:
+## Advanced Usage
+
+### Custom Base Language
+
+You can override the language detection by providing a `baseLang` parameter:
 
 ```astro
 ---
 import { useI18n } from "@ariaskit/astro-i18n";
-import type en from "../i18n/en.json";
+import en from "i18n/en.json";
 
-const { t, lang, changeLocale } = useI18n<typeof en>(Astro);
+// Force Spanish regardless of route/locale
+const { t, lang } = useI18n<typeof en>(Astro, "es");
 ---
-
-<h1>{t("title")}</h1>
-
-<!-- Language switcher -->
-<nav>
-  <a href={changeLocale("en")}>English</a>
-  <a href={changeLocale("es")}>Español</a>
-  <a href={changeLocale("fr")}>Français</a>
-</nav>
-
-<!-- Current URL: /es/about -> changeLocale("en") returns "/en/about" -->
 ```
 
-## Features
+### TypeScript Configuration
 
-- ✅ TypeScript autocomplete for translation keys
-- ✅ Nested translations with dot notation (`data.users`)
-- ✅ Variable interpolation with `{{variableName}}` syntax
-- ✅ Works with all Astro routing strategies
-- ✅ Language switcher with `changeLocale`
-- ✅ Zero configuration needed
-- ✅ Lightweight and fast
+The library uses advanced TypeScript features including:
+- **Path mapping**: Configure `@/*` paths in your `tsconfig.json`
+- **DotNotation type**: Provides autocompletion for nested translation keys
+- **Generic types**: Full type safety for your translation structure
+
+Make sure your `tsconfig.json` includes:
+```json
+{
+  "compilerOptions": {
+    "resolveJsonModule": true,
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["src/*"]
+    }
+  }
+}
+```
+
+## Error Handling
+
+The library will throw an error if:
+- Translation file for the detected language is not found
+- The JSON file is malformed or cannot be parsed
+
+## Development
+
+This project is built with:
+- **TypeScript** for type safety
+- **tsup** for bundling
+- **Vitest** for testing
+- **Husky** for git hooks
+- **Prettier** for code formatting
 
 ## License
 
