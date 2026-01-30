@@ -3,11 +3,14 @@ import { readFileSync } from "fs";
 import { join } from "path";
 import type { DotNotation } from "@/types";
 
-export function useI18n<T extends Record<string, any>>(astro: AstroGlobal) {
-  const lang = astro.currentLocale ?? astro.params?.lang ?? "en";
+export function useI18n<T extends Record<string, any>>(
+  astro: AstroGlobal,
+  baseLang?: string,
+) {
+  const lang = baseLang ?? astro.currentLocale ?? astro.params?.lang ?? "en";
 
   const translations = JSON.parse(
-    readFileSync(join(process.cwd(), "src", "i18n", `${lang}.json`), "utf-8"),
+    readFileSync(join(process.cwd(), "i18n", `${lang}.json`), "utf-8"),
   ) as Record<string, any>;
 
   if (!translations) {
@@ -34,10 +37,5 @@ export function useI18n<T extends Record<string, any>>(astro: AstroGlobal) {
       return interpolate(result, params);
     },
     lang,
-    changeLocale: (newLang: string) => {
-      const parts = astro.url.pathname.split("/").slice(2);
-      const route = [newLang, ...parts].join("/");
-      return route;
-    },
   };
 }
