@@ -1,3 +1,5 @@
+import { AstroGlobal } from "astro";
+
 // Utility type to decrement a number type
 type Prev<N extends number> = N extends 5
   ? 4
@@ -21,3 +23,18 @@ export type DotNotation<
         ? `${Prefix}${K}` | DotNotation<T[K], `${Prefix}${K}.`, Prev<Depth>>
         : `${Prefix}${K}`;
     }[keyof T & string];
+
+export type SSGParams = {
+  astro: AstroGlobal<any, any, any>;
+  locale?: string;
+};
+
+export type SSRParams<T> = {
+  translations: T;
+  locale: string;
+};
+
+export interface I18NParams<T> {
+  ssg?: SSGParams;
+  ssr?: SSRParams<T>;
+}
