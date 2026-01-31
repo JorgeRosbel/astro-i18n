@@ -1,17 +1,20 @@
-import { defineConfig } from 'tsup';
-import { TsconfigPathsPlugin } from '@esbuild-plugins/tsconfig-paths';
+import { defineConfig } from "tsup";
+import { TsconfigPathsPlugin } from "@esbuild-plugins/tsconfig-paths";
 
 export default defineConfig({
-  entry: ['src/index.ts'],
-  format: ['esm'],
+  entry: {
+    index: "src/index.ts",
+    cli: "src/cli.ts",
+  },
+  format: ["esm"],
   dts: true,
   sourcemap: false,
   minify: true,
   clean: true,
-  outDir: 'dist',
+  outDir: "dist",
   outExtension() {
     return {
-      js: '.mjs',
+      js: ".mjs",
     };
   },
   esbuildPlugins: [TsconfigPathsPlugin({})],
