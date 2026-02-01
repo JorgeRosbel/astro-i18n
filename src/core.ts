@@ -20,6 +20,8 @@ export function useI18n<T extends Record<string, any>>({
     );
   }
 
+  const isDev = process.env.NODE_ENV === "development";
+
   const lang =
     ssr?.locale ??
     ssg?.locale ??
@@ -30,7 +32,7 @@ export function useI18n<T extends Record<string, any>>({
   let translations: Record<string, any> | undefined;
 
   if (ssg) {
-    if (!translationsCache[lang]) {
+    if (isDev || !translationsCache[lang]) {
       try {
         const path = join(process.cwd(), "i18n", `${lang}.json`);
         translationsCache[lang] = JSON.parse(readFileSync(path, "utf-8"));

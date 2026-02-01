@@ -126,8 +126,8 @@ your-project/
 
 Now that you have the basic setup:
 
-1. [Learn how to use the library](./library-usage.md)
-2. [Explore routing strategies](./routing-strategies.md)
+1. [Learn how to use the library](./library-usage/)
+2. [Explore routing strategies](./routing-strategies/)
 3. [Check out the CLI tool](./cli-usage.md)
 4. [Read the API reference](./api-reference.md)
 
@@ -151,6 +151,5 @@ Now that you have the basic setup:
 
 If you encounter issues:
 
-1. Check the [troubleshooting section](./advanced-usage.md#troubleshooting)
 2. Review the [API documentation](./api-reference.md)
 3. Open an issue on [GitHub](https://github.com/JorgeRosbel/astro-i18n/issues)

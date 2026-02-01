@@ -387,4 +387,4 @@ interface Translations {
 const { t } = useI18n<Translations>({ ssg: { astro: Astro } });
 ```
 
-This complete API reference covers all aspects of the @ariaskit/astro-i18n library. For practical examples and usage patterns, see the [Library Usage](./library-usage.md) guide.
+This complete API reference covers all aspects of the @ariaskit/astro-i18n library. For practical examples and usage patterns, see the [Library Usage](./library-usage/) guide.
