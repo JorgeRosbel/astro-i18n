@@ -1,50 +1,45 @@
 # @ariaskit/astro-i18n
 
-> **Note:** This is a community project and is not officially affiliated with or endorsed by the Astro team.
+<div align="center">
 
-Simple internationalization (i18n) library for Astro with TypeScript support.
+[![NPM Version](https://img.shields.io/npm/v/@ariaskit/astro-i18n?style=flat-square&color=BC443E)](https://www.npmjs.com/package/@ariaskit/astro-i18n)
+[![NPM Downloads](https://img.shields.io/npm/dm/@ariaskit/astro-i18n?style=flat-square&color=5D9948)](https://www.npmjs.com/package/@ariaskit/astro-i18n)
+[![CI Status](https://img.shields.io/github/actions/workflow/status/JorgeRosbel/astro-i18n/publish.yml?style=flat-square&label=Publish)](https://github.com/JorgeRosbel/astro-i18n/actions)
+[![CI Status](https://img.shields.io/github/actions/workflow/status/JorgeRosbel/astro-i18n/lint-format.yml?style=flat-square&label=Format-Lint)](https://github.com/JorgeRosbel/astro-i18n/actions)
+[![CI Status](https://img.shields.io/github/actions/workflow/status/JorgeRosbel/astro-i18n/tests.yml?style=flat-square&label=Tests)](https://github.com/JorgeRosbel/astro-i18n/actions)
+[![License](https://img.shields.io/github/license/JorgeRosbel/astro-i18n?style=flat-square)](LICENSE)
 
-## Features
+**Simple, type-safe internationalization (i18n) for Astro.** *Built for speed, developer experience, and TypeScript enthusiasts.*
 
-- ✅ TypeScript autocomplete for translation keys using `DotNotation` type
-- ✅ Nested translations with dot notation (`data.users`)
-- ✅ Variable interpolation with `{{variableName}}` syntax
-- ✅ Works with all Astro routing strategies
-- ✅ Zero configuration needed
-- ✅ Lightweight and fast
-- ✅ Strong TypeScript support with path mapping
+[Explore the Docs](docs/getting-started.md) · [Report Bug](https://github.com/JorgeRosbel/astro-i18n/issues) · [API Reference](docs/api-reference.md)
 
-## Installation
+</div>
+
+---
+
+> *This is a community project and is not officially affiliated with or endorsed by the Astro team.*
+
+## ✨ Features
+
+- 💎 **Type-Safe Autocomplete**: Full TypeScript support for nested translation keys.
+- 🚀 **Zero-Config**: Works out of the box with any Astro routing strategy.
+- 📦 **Ultra-Lightweight**: Minimal overhead and tiny bundle size.
+- 🔗 **Dot Notation**: Access nested translations easily (e.g., `user.profile.name`).
+- 🧩 **Interpolation**: Dynamic variables with `{{param}}` syntax.
+- 🛡️ **Reliable CI**: Tested against production environments with 100% automated checks.
+
+## 📦 Installation
 
 ```bash
-npm install @ariaskit/astro-i18n
-# or
+# Using pnpm (recommended)
 pnpm add @ariaskit/astro-i18n
-# or
+
+# Using npm
+npm install @ariaskit/astro-i18n
+
+# Using yarn
 yarn add @ariaskit/astro-i18n
 ```
-
-## Documentation
-
-- [Getting Started](docs/getting-started.md) - Installation and basic setup
-- [Library Usage](docs/library-usage/) - How to use the library
-  - [Basic Usage](docs/library-usage/basic-usage.md) - Import and basic setup
-  - [Translation Features](docs/library-usage/translation-features.md) - Simple translations, nested keys, and variable interpolation
-  - [TypeScript Support](docs/library-usage/typescript-support.md) - TypeScript autocompletion and type safety
-  - [Language Detection](docs/library-usage/language-detection.md) - How the library detects the current language
-  - [Common Patterns](docs/library-usage/common-patterns.md) - Reusable components and templates
-  - [Best Practices](docs/library-usage/best-practices.md) - Guidelines and complete examples
-- [CLI Usage](docs/cli-usage.md) - Command line tool documentation
-- [API Reference](docs/api-reference.md) - Complete API reference
-- [Routing Strategies](docs/routing-strategies/) - Different routing approaches
-  - [Overview](docs/routing-strategies/overview.md) - Language detection and compatibility
-  - [Strategy 1: Astro Built-in i18n Routing](docs/routing-strategies/astro-built-in-i18n.md) - Recommended approach for Astro 5+
-  - [Strategy 2: Dynamic Routes](docs/routing-strategies/dynamic-routes.md) - Using `[lang]` parameter
-  - [Strategy 3: Folder-based Routing](docs/routing-strategies/folder-based-routing.md) - Organizing pages by language folders
-  - [Strategy 4: Subdomain Routing](docs/routing-strategies/subdomain-routing.md) - Using different subdomains per language
-  - [Language Navigation](docs/routing-strategies/language-navigation.md) - Language switcher components
-  - [SEO Considerations](docs/routing-strategies/seo-considerations.md) - Meta tags and sitemaps
-  - [Best Practices](docs/routing-strategies/best-practices.md) - Guidelines and migration guide
 
 ## Quick Start
 
@@ -68,7 +63,3 @@ const { t, locale } = useI18n({ ssg: { astro: Astro } });
 <h1>{t("title")}</h1>
 <p>{t("welcome_message", { name: "World" })}</p>
 ```
-
-## License
-
-MIT
