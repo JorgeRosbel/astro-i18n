@@ -1,4 +1,4 @@
-import { AstroGlobal } from "astro";
+import { AstroGlobal } from 'astro';
 
 // Utility type to decrement a number type
 type Prev<N extends number> = N extends 5
@@ -12,11 +12,7 @@ type Prev<N extends number> = N extends 5
         : 0;
 
 // DotNotation type to represent nested object keys in dot notation
-export type DotNotation<
-  T,
-  Prefix extends string = "",
-  Depth extends number = 5,
-> = Depth extends 0
+export type DotNotation<T, Prefix extends string = '', Depth extends number = 5> = Depth extends 0
   ? never
   : {
       [K in keyof T & string]: T[K] extends Record<string, any>
