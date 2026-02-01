@@ -1,0 +1,50 @@
+---
+interface Props {
+    key: string;
+    params?: string[];
+}
+
+const { key, params } = Astro.props as Props;
+
+const isDev = process.env.NODE_ENV === "development";
+---
+
+{
+    isDev ? (
+        <span data-id="debug-tooltip" class="relative group">
+            <span
+                data-id="debug-tooltip-trigger"
+                class="*:group-hover:opacity-80 *:group-hover:bg-yellow-500/10 transition-all duration-200"
+            >
+                <slot />
+            </span>
+            <sdiv
+                class={`absolute flex flex-col text-white left-1/2  font-mono -translate-x-1/2 top-full mt-2 z-50 transition-all duration-200 invisible opacity-0 scale-95 group-hover:visible group-hover:opacity-100 group-hover:scale-100 text-[0.8rem] p-2 border rounded w-max bg-slate-800`}
+            >
+                <span class="font-semibold pb-1 border-b opacity-65">
+                    @ariaskit/astro-i18n |{" "}
+                    <span class="text-yellow-300">DEBUG</span>{" "}
+                </span>
+                <span class="mt-3 text-center pb-1">
+                    <span class="px-1 py-0.5 rounded text-cyan-400">key</span>
+                    {":"}
+                    <span class="px-1 py-0.5 bg-pink-400/15 rounded text-pink-400">
+                        {key}
+                    </span>
+                </span>
+                {params && (
+                    <span class="mt-3 text-center pb-1">
+                        <span class="px-1 py-0.5 rounded text-cyan-400">
+                            params
+                        </span>{":"}
+                        <span class="px-1 py-0.5 bg-pink-400/15 rounded text-pink-400">
+                            {params.join(" | ")}
+                        </span>
+                    </span>
+                )}
+            </sdiv>
+        </span>
+    ) : (
+        <slot />
+    )
+}

@@ -27,6 +27,7 @@
 - 🔗 **Dot Notation**: Access nested translations easily (e.g., `user.profile.name`).
 - 🧩 **Interpolation**: Dynamic variables with `{{param}}` syntax.
 - 🛡️ **Reliable CI**: Tested against production environments with 100% automated checks.
+- 🛠️ **Visual Debugger**: Inspect translation keys and params in development.
 
 ## 📦 Installation
 
@@ -37,29 +38,61 @@ pnpm add @ariaskit/astro-i18n
 # Using npm
 npm install @ariaskit/astro-i18n
 
-# Using yarn
-yarn add @ariaskit/astro-i18n
 ```
 
 ## Quick Start
 
-1. Create translation files in `i18n/`:
-
-```
-i18n/
-  en.json
-  es.json
-```
-
+1. Create translation files in `i18n/` (e.g., `en.json`, `es.json`).
 2. Use in your Astro pages:
 
 ```astro
 ---
 import { useI18n } from "@ariaskit/astro-i18n";
 
-const { t, locale } = useI18n({ ssg: { astro: Astro } });
+const { t } = useI18n({ ssg: { astro: Astro } });
 ---
 
-<h1>{t("title")}</h1>
-<p>{t("welcome_message", { name: "World" })}</p>
+<h1>{t("common.title")}</h1>
+<p>{t("common.welcome", { name: "User" })}</p>
+
 ```
+
+## 🛠️ Debug Mode (Development Only)
+
+This library includes a powerful **Visual Inspector** to help you identify translation keys and required parameters directly in the browser.
+
+> [!NOTE]
+> **Zero Production Overhead**: The debug tool only renders during development (`NODE_ENV === 'development'`). In production, it renders pure HTML without any extra tags or tooltips.
+
+### Usage
+
+Import `I18NDebug` and wrap your translated elements:
+
+```astro
+---
+import { useI18n } from "@ariaskit/astro-i18n";
+import I18NDebug from "@ariaskit/astro-i18n/I18NDebug.astro";
+
+const { t } = useI18n({ ssg: { astro: Astro } });
+---
+
+<I18NDebug key="user.profile.title" params={["name", "role"]}>
+  <h2>{t("user.profile.title", { name: "John", role: "Admin" })}</h2>
+</I18NDebug>
+
+<p>
+  Please visit our 
+  <I18NDebug key="nav.dashboard">
+    <a href="/dashboard">{t("nav.dashboard")}</a>
+  </I18NDebug>
+  to manage your account.
+</p>
+
+```
+
+### Inspector Features
+
+* 🔍 **Key Identification**: Hover over any highlighted element to see its JSON key.
+* 🏷️ **Params Documentation**: View exactly which variables a translation expects.
+* 🎨 **Smart Highlight**: Elements are marked with a subtle yellow background on hover.
+* 🧵 **Layout Friendly**: Designed as an `inline` element by default to preserve your UI flow.
