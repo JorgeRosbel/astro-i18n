@@ -1,41 +1,32 @@
-import { readFileSync } from "fs";
-import { join } from "path";
-import type { DotNotation, I18NParams } from "@/types";
+import { readFileSync } from 'fs';
+import { join } from 'path';
+import type { DotNotation, I18NParams } from '@/types';
 
 const translationsCache: Record<string, any> = {};
 
-export function useI18n<T extends Record<string, any>>({
-  ssg,
-  ssr,
-}: I18NParams<T>) {
+export function useI18n<T extends Record<string, any>>({ ssg, ssr }: I18NParams<T>) {
   if (ssg && ssr) {
     throw new Error(
-      "[astro-i18n] You cannot provide both 'ssg' and 'ssr' configurations. Choose one based on your rendering strategy.",
+      "[astro-i18n] You cannot provide both 'ssg' and 'ssr' configurations. Choose one based on your rendering strategy."
     );
   }
 
   if (!ssg && !ssr) {
-    throw new Error(
-      "[astro-i18n] You must provide either an 'ssg' or 'ssr' configuration object.",
-    );
+    throw new Error("[astro-i18n] You must provide either an 'ssg' or 'ssr' configuration object.");
   }
 
-  const isDev = process.env.NODE_ENV === "development";
+  const isDev = process.env.NODE_ENV === 'development';
 
   const lang =
-    ssr?.locale ??
-    ssg?.locale ??
-    ssg?.astro.currentLocale ??
-    ssg?.astro.params?.lang ??
-    "en";
+    ssr?.locale ?? ssg?.locale ?? ssg?.astro.currentLocale ?? ssg?.astro.params?.lang ?? 'en';
 
   let translations: Record<string, any> | undefined;
 
   if (ssg) {
     if (isDev || !translationsCache[lang]) {
       try {
-        const path = join(process.cwd(), "i18n", `${lang}.json`);
-        translationsCache[lang] = JSON.parse(readFileSync(path, "utf-8"));
+        const path = join(process.cwd(), 'i18n', `${lang}.json`);
+        translationsCache[lang] = JSON.parse(readFileSync(path, 'utf-8'));
       } catch (e) {
         if (lang !== ssg.locale) {
           return useI18n({ ssg });
@@ -52,9 +43,7 @@ export function useI18n<T extends Record<string, any>>({
   }
 
   if (!translations) {
-    throw new Error(
-      `[astro-i18n] Could not load ${lang}.json at ${process.cwd()}`,
-    );
+    throw new Error(`[astro-i18n] Could not load ${lang}.json at ${process.cwd()}`);
   }
 
   function interpolate(text: string, params?: Record<string, any>): string {
@@ -67,12 +56,12 @@ export function useI18n<T extends Record<string, any>>({
 
   return {
     t: (key: DotNotation<T>, params?: Record<string, any>): string => {
-      const keys = (key as string).split(".");
+      const keys = (key as string).split('.');
       const result = keys.reduce((obj, k) => obj?.[k], translations);
 
-      if (typeof result !== "string") {
+      if (typeof result !== 'string') {
         throw new Error(
-          `[astro-i18n] Missing translation key: "${key as string}" for locale: "${lang}".`,
+          `[astro-i18n] Missing translation key: "${key as string}" for locale: "${lang}".`
         );
       }
 
