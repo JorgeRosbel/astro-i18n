@@ -30,3 +30,6 @@ jobs:
 
       - name: Run Tests
         run: pnpm run test -- --ci --coverage=false
+
+      - name: Build the package
+        run: pnpm run build
