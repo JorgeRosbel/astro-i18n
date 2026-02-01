@@ -1,5 +1,7 @@
 # @ariaskit/astro-i18n
 
+> **Note:** This is a community project and is not officially affiliated with or endorsed by the Astro team.
+
 Simple internationalization (i18n) library for Astro with TypeScript support.
 
 ## Features
