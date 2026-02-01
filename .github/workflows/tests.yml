@@ -1,4 +1,4 @@
-name: CI
+name: CI - Unit Test
 
 on:
   pull_request:
@@ -6,7 +6,7 @@ on:
 
 jobs:
   test:
-    name: Tests
+    name: Run the test suite
     runs-on: ubuntu-latest
     timeout-minutes: 5
 
