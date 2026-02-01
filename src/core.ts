@@ -27,7 +27,7 @@ export function useI18n<T extends Record<string, any>>({ ssg, ssr }: I18NParams<
       try {
         const path = join(process.cwd(), 'i18n', `${lang}.json`);
         translationsCache[lang] = JSON.parse(readFileSync(path, 'utf-8'));
-      } catch (e) {
+      } catch {
         if (lang !== ssg.locale) {
           return useI18n({ ssg });
         }
